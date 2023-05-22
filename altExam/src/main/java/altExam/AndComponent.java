@@ -20,7 +20,7 @@ public class AndComponent extends CircuitComponent{
 			result = inputs.get(0)&inputs.get(1);
 			if(result) {
 				this.setValue(Value.TRUE);
-			}else {
+			}else { 
 				this.setValue(Value.FALSE);
 			}
 		}catch(ImpossibleToEvaluateException ex) {
