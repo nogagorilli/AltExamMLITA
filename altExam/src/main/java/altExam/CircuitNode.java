@@ -53,42 +53,50 @@ public class CircuitNode extends JPanel{
 	public void setMode(Mode mode) {
 		this.mode = mode;
 	}
+	
+	
 
 	private class LMBClickListener extends MouseAdapter{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON1) {
-				System.out.println("Connection creation");
+				
 				CircuitPanel circuitPanel = (CircuitPanel) circuitNode.getParent().getParent();
-				CircuitConnection bufferConnection = circuitPanel.getBufferConnection();
-				if(bufferConnection == null) {
-					circuitPanel.setBufferConnection(new CircuitConnection(null,null));
-					bufferConnection = circuitPanel.getBufferConnection();
-				}
-				if(bufferConnection.getBeginNode() == null && circuitNode.getMode() == Mode.OUTPUT) {
-					bufferConnection.setBeginNode(circuitNode);
-				}else if(circuitNode.getMode() == Mode.INPUT){
-					bufferConnection.setEndNode(circuitNode);
-					if(bufferConnection.getBeginNode() != bufferConnection.getEndNode()&&
-							bufferConnection.getBeginNode() != null &&
-							bufferConnection.getEndNode() != null &&
-							bufferConnection.getEndNode().getConnections().size() == 0&&
-							
-							bufferConnection.getBeginNode().getParent() != bufferConnection.getEndNode().getParent()) {
-						circuitPanel.add(bufferConnection);
-						bufferConnection.getBeginNode().getConnections().add(bufferConnection);
-						bufferConnection.getEndNode().getConnections().add(bufferConnection);
-						bufferConnection.repaint();
-						circuitPanel.setBufferConnection(new CircuitConnection(null,null));
+				circuitPanel.buffer(circuitNode);
+				if(circuitPanel.getCircuitNodeBuffer()[0] != null && circuitPanel.getCircuitNodeBuffer()[1] != null ) {
+					
+					if((circuitPanel.getCircuitNodeBuffer()[0].getMode() == CircuitNode.Mode.INPUT && circuitPanel.getCircuitNodeBuffer()[1].getMode() == CircuitNode.Mode.OUTPUT)|
+							(circuitPanel.getCircuitNodeBuffer()[0].getMode() == CircuitNode.Mode.OUTPUT && circuitPanel.getCircuitNodeBuffer()[1].getMode() == CircuitNode.Mode.INPUT)) {
+						System.out.println("Connection creation");
+						CircuitNode begin = circuitPanel.getCircuitNodeBuffer()[0];
+						CircuitNode end = circuitPanel.getCircuitNodeBuffer()[1];
+						if(begin.getMode() == CircuitNode.Mode.INPUT) {
+							CircuitNode temp = end;
+							end = begin;
+							begin = temp;
+						}
+						CircuitComponent beginComp = (CircuitComponent) begin.getParent();
+						CircuitComponent endComp = (CircuitComponent) end.getParent();
+						int beginNumber = beginComp.getOutputNodes().indexOf(begin);
+						int endNumber = endComp.getInputNodes().indexOf(end);
+						try {
+							circuitPanel.addConnection(beginComp, beginNumber, endComp, endNumber);
+						} catch (InputOutputCollisionException e1) {
+							e1.printStackTrace();
+						}catch (WrongParentException e2) {
+							e2.printStackTrace();
+						}
+						circuitPanel.clearBuffer();
 					}else {
-						circuitPanel.setBufferConnection(new CircuitConnection(null,null));
+						circuitPanel.clearBuffer();
 					}
 				}
-				
 			}
-		}
 				
+		}
 	}
+				
+	
 	private class RMBClickListener extends MouseAdapter{
 		@Override
 		public void mouseClicked(MouseEvent e) {

@@ -31,43 +31,34 @@ public class CircuitPopupMenu extends JPopupMenu{
 		orItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OrComponent comp = new OrComponent(parentPanel, popupX, popupY);
-				parentPanel.getCircuitComponents().add(comp);
-				parentPanel.add(comp);
-				parentPanel.repaint();
+				parentPanel.addComponent(comp);
+
 			}
 		});
 		
 		andItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AndComponent comp = new AndComponent(parentPanel, popupX, popupY);
-				parentPanel.getCircuitComponents().add(comp);
-				parentPanel.add(comp);
-				parentPanel.repaint();
+				parentPanel.addComponent(comp);
 			}
 		});
 		
 		notItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NotComponent comp = new NotComponent(parentPanel, popupX, popupY);
-				parentPanel.getCircuitComponents().add(comp);
-				parentPanel.add(comp);
-				parentPanel.repaint();
+				parentPanel.addComponent(comp);
 			}
 		});
 		inputItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				InputComponent comp = new InputComponent(parentPanel, popupX, popupY);
-				parentPanel.getCircuitComponents().add(comp);
-				parentPanel.add(comp);
-				parentPanel.repaint();
+				parentPanel.addComponent(comp);
 			}
 		});
 		outputItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OutputComponent comp = new OutputComponent(parentPanel, popupX, popupY);
-				parentPanel.getCircuitComponents().add(comp);
-				parentPanel.add(comp);
-				parentPanel.repaint();
+				parentPanel.addComponent(comp);
 			}
 		});
 		this.add(andItem);

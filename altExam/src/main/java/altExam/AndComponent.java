@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class AndComponent extends CircuitComponent{
 	final private static int inputCount = 2;
 	final private static int outputCount = 1;
-	AndComponent(Component parentComp, int x, int y) {
+	AndComponent(CircuitPanel parentComp, int x, int y) {
 		super(parentComp, "src/main/resources/pictures/AND.png", x, y,50,30);
 		this.instantiateInputNodes(inputCount);
 		this.instantiateOutputNodes(outputCount);

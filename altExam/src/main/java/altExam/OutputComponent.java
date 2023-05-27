@@ -10,7 +10,7 @@ import altExam.CircuitComponent.Value;
 public class OutputComponent extends CircuitComponent {
 	final private static int inputCount = 1;
 	private JTextField text;
-	OutputComponent(Component parentComp, int x, int y) {
+	OutputComponent(CircuitPanel parentComp, int x, int y) {
 		super(parentComp, "src/main/resources/pictures/OUTPUT.png", x, y,50,30);
 		this.instantiateInputNodes(inputCount);
 		this.text = new JTextField("0");

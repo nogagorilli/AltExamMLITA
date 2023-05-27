@@ -8,7 +8,7 @@ import altExam.CircuitComponent.Value;
 public class NotComponent extends CircuitComponent{
 	final private static int inputCount = 1;
 	final private static int outputCount = 1;
-	NotComponent(Component parentComp, int x, int y) {
+	NotComponent(CircuitPanel parentComp, int x, int y) {
 		super(parentComp, "src/main/resources/pictures/NOT.png", x, y,50,30);
 		this.instantiateInputNodes(inputCount);
 		this.instantiateOutputNodes(outputCount);

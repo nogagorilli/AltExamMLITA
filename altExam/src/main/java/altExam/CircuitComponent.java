@@ -14,18 +14,22 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+/**
+ * @author user
+ *
+ */
 abstract class CircuitComponent extends JPanel{
 	final private CircuitComponent circuitComponent = this;
 	private ImageIcon image;
 	private int HEIGHT;
 	private int WIDTH;
 	private Point prevPoint;
-	private Component parentComponent;
+	private CircuitPanel parentComponent;
 	private Value value;
 	protected ArrayList<CircuitNode> inputNodes;
 	protected ArrayList<CircuitNode> outputNodes;
 	
-	CircuitComponent(Component parentComp,String imageName, int x, int y,int width,int height){
+	CircuitComponent(CircuitPanel parentComp,String imageName, int x, int y,int width,int height){
 		
 		this.image = new ImageIcon(new ImageIcon(imageName).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 		this.setLayout(null);
@@ -101,38 +105,39 @@ abstract class CircuitComponent extends JPanel{
 	private class RMBClickListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e) {
 			if(e.getButton() == MouseEvent.BUTTON3) {
-				circuitComponent.removeFromPanel();
+				((CircuitPanel)parentComponent).removeComponent(circuitComponent);
 			}
 		}
 	}
-	public void removeFromPanel() {
-		ArrayList<CircuitConnection> forDeletion = new ArrayList<CircuitConnection>();
-		for(CircuitNode node:this.outputNodes) {
-			for(CircuitConnection con:node.getConnections()){
-				System.out.println("aaa");
-				forDeletion.add(con);
-			}
-			this.remove(node);
-		}
-		for(CircuitNode node:this.inputNodes) {
-			for(CircuitConnection con:node.getConnections()){
-				
-				forDeletion.add(con);
-				System.out.println("bbb");
-
-			}
-			this.remove(node);
-			System.out.println("ccc");
-		}
-		for(CircuitConnection con:forDeletion) {
-			con.removeFromPanel();
-		}
-		for(CircuitNode node:this.inputNodes) this.remove(node);
-		CircuitPanel tempParent = (CircuitPanel) this.getParent();
-		tempParent.remove(this);
-		tempParent.getCircuitComponents().remove(this);
-		tempParent.repaint();
-	}
+	
+//	public void removeFromPanel() {
+//		ArrayList<CircuitConnection> forDeletion = new ArrayList<CircuitConnection>();
+//		for(CircuitNode node:this.outputNodes) {
+//			for(CircuitConnection con:node.getConnections()){
+//				System.out.println("aaa");
+//				forDeletion.add(con);
+//			}
+//			this.remove(node);
+//		}
+//		for(CircuitNode node:this.inputNodes) {
+//			for(CircuitConnection con:node.getConnections()){
+//				
+//				forDeletion.add(con);
+//				System.out.println("bbb");
+//
+//			}
+//			this.remove(node);
+//			System.out.println("ccc");
+//		}
+//		for(CircuitConnection con:forDeletion) {
+//			con.removeFromPanel();
+//		}
+//		for(CircuitNode node:this.inputNodes) this.remove(node);
+//		CircuitPanel tempParent = (CircuitPanel) this.getParent();
+//		tempParent.remove(this);
+//		tempParent.getCircuitComponents().remove(this);
+//		tempParent.repaint();
+//	}
 	
 	private class DragListener extends MouseMotionAdapter{
 		public void mouseDragged(MouseEvent e) {
@@ -154,7 +159,10 @@ abstract class CircuitComponent extends JPanel{
 			repaint();
 		}
 	}
-	
+	/**
+	 * Creates input nodes
+	 * @param nodeCount
+	 */
 	protected void instantiateInputNodes(int nodeCount) {
 		float interval = this.getHeight()/(nodeCount+1);
 		for(int i = 1;i<=nodeCount;i++) {
@@ -167,6 +175,12 @@ abstract class CircuitComponent extends JPanel{
 		this.repaint();
 	}
 	
+	
+	
+	/**
+	 * Creates output nodes
+	 * @param nodeCount
+	 */
 	protected void instantiateOutputNodes(int nodeCount) {
 		float interval = this.getHeight()/(nodeCount+1);
 		for(int i = 1;i<=nodeCount;i++) {
@@ -196,9 +210,21 @@ abstract class CircuitComponent extends JPanel{
 			}
 		},
 	}
+	
+	
+	/**
+	 * Evaluates the component by setting the attribute "value"
+	 */
 	public abstract void evaluate();
 	
+	
+	/**
+	 * Used to get inputs of a component in form of a Boolean array list
+	 * 
+	 *  @return ArrayList<Boolean>
+	 */
 	protected ArrayList<Boolean> getInputs() throws ImpossibleToEvaluateException{
+		
 		ArrayList<Boolean> ret = new ArrayList<Boolean>();
 		for (CircuitNode node:this.inputNodes) {
 			try {
