@@ -1,3 +1,4 @@
+
 package altExam;
 
 public class ImpossibleToEvaluateException extends Throwable {
@@ -5,3 +6,4 @@ public class ImpossibleToEvaluateException extends Throwable {
 		super(s);
 	}
 }
+

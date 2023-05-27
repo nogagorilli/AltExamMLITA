@@ -52,7 +52,7 @@ public class CircuitPanel extends JPanel{
 	
 	/**
 	 * Makes one step of circuit evaluation by simply
-	 * evaluating each component once. Should be repeated
+	 * evaluating each component once. Should be repeated\n
 	 * at least 10 times in a row to get result somewhat consistently.
 	 */
 	public void evaluateOnce() {
